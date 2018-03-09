@@ -1,5 +1,6 @@
 #from YouTube:  https://www.youtube.com/watch?v=zRwy8gtgJ1A
 #uses Bootstrap CDN for CSS and JavaScript:  https://www.bootstrapcdn.com/
+#This is the local copy.  The PythonAnywhere copy is called flask_app.py
 from flask import Flask, render_template, flash, request, url_for, redirect
 from wtforms import Form, StringField, TextField, TextAreaField, SubmitField, validators
 import requests
