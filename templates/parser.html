@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+	<h1>Enter your site.</h1>
+	{% from 'includes/_formhelpers.html' import render_field %}
+	<form method="POST" action="">
+		<div class="form-group">
+			{{render_field(form.site, class_="form-control")}}
+		</div>
+		<button type="submit" class="btn btn-default">Submit</button>
+	
+	</form>
+{% endblock %}
