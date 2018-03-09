@@ -1,6 +1,12 @@
 #from YouTube:  https://www.youtube.com/watch?v=zRwy8gtgJ1A
 #uses Bootstrap CDN for CSS and JavaScript:  https://www.bootstrapcdn.com/
 #This is the local copy.  The PythonAnywhere copy is called flask_app.py
+##To Do List
+##Fix refresh issue so old data clears
+##Fix url grab to handle all picture formats (ignoring javescript pages for now because: demo!)
+##Import parsing code with model and configure (I'm dreading this)
+##Enhance UI so parsed photos return in table format with:  site url, image url, image thumbnail, image caption
+
 from flask import Flask, render_template, flash, request, url_for, redirect
 from wtforms import Form, StringField, TextField, TextAreaField, SubmitField, validators
 import requests
@@ -32,7 +38,7 @@ def index():
 					webbrowser.open_new_tab(img)'''
 				#print(r.text)
 				#webbrowser.open_new_tab(url)
-				print(images)
+				print(images) #for debugging only
 			except:
 				errors.append("Invalid URL.  Please try again.")
 		return render_template('index.html', errors=errors, results=images)
