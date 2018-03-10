@@ -22,8 +22,8 @@ app = Flask(__name__)
 def index():
 		errors = []
 		images =[]
-		if request.method == 'POST':
-			try:
+		try:
+			if request.method == 'POST':
 				urls = request.form['urls'].split(",")
 				for url in urls:
 					r = requests.get(url)
@@ -33,14 +33,10 @@ def index():
 						src = img.get('src')
 						src = urllib.parse.urljoin(url, src) #used to get full path when sites give relative paths.
 						images.append(src)
-					#print(images)
-				'''for img in images:
-					webbrowser.open_new_tab(img)'''
-				#print(r.text)
-				#webbrowser.open_new_tab(url)
-				print(images) #for debugging only
-			except:
-				errors.append("Invalid URL.  Please try again.")
+			return redirect(url_for('index'), errors=errors, results=images)
+				#print(images)print(images) #for debugging only
+		except:
+			errors.append("Invalid URL.  Please try again.")
 		return render_template('index.html', errors=errors, results=images)
 
 

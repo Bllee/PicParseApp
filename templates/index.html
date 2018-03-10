@@ -7,14 +7,11 @@
 	</div>
 	
 	<div class="container">
-      <h1>Sites to Parse</h1>
-	  <form role="form" method='POST' action='/'>
-        <div class="form-group">
-			<!--<input type="textarea" name="url" class="form-control" id="url-box" placeholder="Enter URLs separated by commas..."> -->
-			<textarea class="form-control" name="urls" id="url-box" placeholder="Enter URLs separated by commas..." rows=5></textarea>
-         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
+		<h1>Sites to Parse</h1>
+		<form action="/" class= "form-group" method="POST"> <!--form-group makes the text into a long box, otherwise it is small -->
+			<textarea class="form-control" name="urls" id="url-box" placeholder="Enter URLs, separated by commas" rows=5></textarea>  
+			<button type="submit" class="btn btn-default btn-lg btn-block" style="margin-top:10px">Parse It!</button>
+		</form>
      </div>
 	 <br>
 	 <div class="container">
