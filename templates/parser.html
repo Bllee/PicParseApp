@@ -21,8 +21,8 @@
 				<tr>
 				<!--<th scope="row">{{ (results|length)-(results|length -1)}}</th> -->
 				<td>This will be the site url</td>
-				<td>This will be article url</td>
-				<td><a href={{ item }}><img src= {{ item }} style="max-width:20%; height:auto" class="img fluid img-thumbnail"></a></td>
+				<td>Picture class is {{ item[0] }}</td>
+				<td><a href="{{ item[1] }}"><img src={{ item[1] }} style="max-width:20%; height:auto" class="img fluid img-thumbnail"></a></td>
 				</tr>
 			{% endfor %}
 			</tbody>
