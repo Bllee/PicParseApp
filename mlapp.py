@@ -2,19 +2,20 @@
 #uses Bootstrap CDN for CSS and JavaScript:  https://www.bootstrapcdn.com/
 #This is the local copy.  The PythonAnywhere copy is called flask_app.py
 ##To Do List
-##Fix url grab to handle all picture formats (ignoring javascript pages for now because: demo!) Sometimes chokes on SVG
 ##User entry error handling and picture format error handling (currently just PASS)
-##Need better picture pre-formatting before feeding into model. Currently chokes frequently.
+##Need better picture pre-formatting before feeding into model. Currently chokes frequently (OpenCV assertion failed error)
+##Error messages if user enters bad URL
 ##Enhance UI so parsed photos return in table format with:  site url, image url, image thumbnail, image caption
-##Fix header issue in urllib.request.retrieve to avoid 403 forbidden errors.
 ##Train new model for better accuracy.
 
+print ("Loading libraries....")
 from flask import Flask, render_template, flash, request, url_for, redirect
 #from wtforms import Form, StringField, TextField, TextAreaField, SubmitField, validators (for future refinements)
-import requests, urllib, urllib.request
+import requests, urllib, urllib.request #urllib sometimes results in 403 forbidden, try requests instead
 from bs4 import BeautifulSoup
 from gevent.wsgi import WSGIServer #won't work with default flask run app
 import os, tempfile #for file manipulation
+from io import BytesIO #to open requests binary content
 
 # ### Ensure you have the correct kernel running (activate conda env) and that you set PYTHONPATH=PathToFastAIFolder
 # Example `set PYTHONPATH=D:\Documents\GitHub\fastai`
@@ -27,8 +28,6 @@ from fastai.model import *
 from fastai.dataset import *
 from fastai.sgdr import *
 from fastai.plots import *
-
-
 
 
 ##Configure, train and load fastai model
@@ -51,11 +50,13 @@ probs = np.mean(np.exp(log_preds),0)
 ##load the pretrained model
 learn.load('d:/Documents/GitHub/SkollMachines/picparse_model') 
 
+print("Ready to parse!")
+
 ##The function. Taken from fastAI course.
 ##predicts class of image based on currently trained model
 ##takes image name as input (will need full path also)
 def predict_it(fn):
-	
+	#fn = BytesIO(fn)
 	trn_tfms, val_tfms = tfms_from_model(arch, sz) # get transformations
 	im = val_tfms(open_image(fn))
 	learn.precompute=False #passing in raw image, not activations
@@ -78,7 +79,7 @@ def index():
 		parsedClass = []
 		if request.method == 'POST':
 			urls = request.form['urls'].split(",")
-			for url in urls:  # build list of image urls for display and image file names for parsing
+			for url in urls:  # build list of image urls for display and image file names for classification
 				url = url.strip()
 				r = requests.get(url)
 				data = r.text
@@ -87,14 +88,23 @@ def index():
 					src = img.get('src')
 					src = urllib.parse.urljoin(url, src) #used to get full path when sites give relative paths.
 					images.append(src)
-					parsedID.append(urllib.request.urlretrieve(src)[0])
+					#parsedID.append(urllib.request.urlretrieve(src)[0]) 
+					filebinary = requests.get(src)
+					tmp = tempfile.NamedTemporaryFile(delete=False)
+					path = tmp.name
+					tmp.write(filebinary.content)
+					parsedID.append(path)
+					tmp.close()
+					
 			for	fn in parsedID:
+				#print(fn)
 				try:
 					parsedClass.append(predict_it(fn))
 				except:
 					pass
+				os.remove(fn) #delete tmp files
 			results = list(zip(parsedClass, images))
-			urllib.request.urlcleanup() #clean up tempfiles from urlretrieve
+			#urllib.request.urlcleanup() #clean up tempfiles from urlretrieve
 			return render_template('parser.html', results=results, sites=urls)
 		return render_template('index.html')
 	
