@@ -120,7 +120,7 @@ https://conda.anaconda.org/intel/win-64/tornado-4.5.2-py36_intel_0.tar.bz2
 https://conda.anaconda.org/intel/win-64/traitlets-4.3.2-py36_intel_1.tar.bz2
 https://conda.anaconda.org/conda-forge/win-64/vc-14-0.tar.bz2
 https://conda.anaconda.org/intel/win-64/vs2015_runtime-14.0.25123-intel_4.tar.bz2
-https://conda.anaconda.org/peterjc123/win-64/vs2017_runtime-15.4.27004.2010-0.tar.bz2
+https://conda.anaconda.org/peterjc123/win-64/vs2017_runtime-15.4.27004.2010-1.tar.bz2
 https://conda.anaconda.org/intel/win-64/wcwidth-0.1.7-py36_intel_5.tar.bz2
 https://conda.anaconda.org/conda-forge/win-64/webencodings-0.5-py36_0.tar.bz2
 https://conda.anaconda.org/conda-forge/noarch/werkzeug-0.14.1-py_0.tar.bz2
