@@ -85,7 +85,7 @@ https://repo.continuum.io/pkgs/main/win-64/pyreadline-2.1-py36h094d952_1.tar.bz2
 https://conda.anaconda.org/conda-forge/win-64/pytables-3.4.2-np111py36_0.tar.bz2
 https://conda.anaconda.org/conda-forge/win-64/python-3.6.4-0.tar.bz2
 https://conda.anaconda.org/conda-forge/win-64/python-dateutil-2.6.1-py36_0.tar.bz2
-https://conda.anaconda.org/peterjc123/win-64/pytorch-0.3.0-py36_0.3.0cu90.tar.bz2
+https://conda.anaconda.org/peterjc123/win-64/pytorch-0.3.1-py36_0.3.1cu90.tar.bz2
 https://conda.anaconda.org/conda-forge/noarch/pytz-2018.3-py_0.tar.bz2
 https://conda.anaconda.org/conda-forge/win-64/pywinpty-0.5-py36_1.tar.bz2
 https://conda.anaconda.org/conda-forge/win-64/pyyaml-3.12-py36_1.tar.bz2
