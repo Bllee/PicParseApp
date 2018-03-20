@@ -1,4 +1,5 @@
 #Borrows from GitHub Keras-Flask-Deploy-Webapp
+#see also https://blog.keras.io/index.html
 
 import sys
 import os
@@ -22,12 +23,20 @@ from bs4 import BeautifulSoup
 import os, tempfile #for file manipulation
 from io import BytesIO #to open requests binary content
 
+# Model saved with Keras model.save()
+#MODEL_PATH = os.path.join(os.getcwd(), 'models', '224_all_picparse.h5')
+
+# You can also use pretrained model from Keras
+# Check https://keras.io/applications/
+from keras.applications.resnet50 import ResNet50
+model = ResNet50(weights='imagenet')
+
 # Define a flask app
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-		errors = []
+		siteurl = []
 		images =[]
 		parsedID =[]
 		parsedClass = []
@@ -35,6 +44,7 @@ def index():
 			urls = request.form['urls'].split(",")
 			for url in urls:  # build list of image urls for display and image file names for classification
 				url = url.strip()
+				siteurl.append(url)
 				r = requests.get(url)
 				data = r.text
 				soup = BeautifulSoup(data, "html5lib")
@@ -57,7 +67,7 @@ def index():
 				except:
 					pass
 				os.remove(fn) #delete tmp files
-			results = list(zip(parsedClass, images))
+			results = list(zip(siteurl, parsedClass, images))
 			#urllib.request.urlcleanup() #clean up tempfiles from urlretrieve
 			return render_template('parser.html', results=results, sites=urls)
 		return render_template('index.html')
