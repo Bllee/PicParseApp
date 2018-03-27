@@ -4,7 +4,8 @@
 <br>
 <div class="parser-results">
 	<h1>Parser Results</h1>
-		<p>Found {{ results|length }} total images.</p>
+		<p>Found {{ full_results|length }} total images.
+		Showing {{ results|length }} .</p>
 		
 		<div class="container">
 	<!-- Results Table -->
@@ -20,9 +21,9 @@
 			{% for item in results %}
 				<tr>
 				<!--<th scope="row">{{ (results|length)-(results|length -1)}}</th> -->
-				<td>This will be the site url</td>
-				<td>Picture class is {{ item[0] }}</td>
-				<td><a href="{{ item[1] }}"><img src={{ item[1] }} style="max-width:20%; height:auto" class="img fluid img-thumbnail"></a></td>
+				<td>{{ item[0] }}</td>
+				<td>Picture class is {{ item[1] }}</td>
+				<td><a href="{{ item[2] }}"><img src={{ item[2] }} style="max-width:20%; height:auto" class="img fluid img-thumbnail"></a></td>
 				</tr>
 			{% endfor %}
 			</tbody>
