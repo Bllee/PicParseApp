@@ -5,6 +5,7 @@
 
 
 # Keras
+#from keras.applications.imagenet_utils import preprocess_input, decode_predictions
 from keras.models import load_model
 from keras import optimizers
 from keras.preprocessing import image
@@ -25,13 +26,13 @@ print ("Loading and compiling model...")
 #Load and compile Keras model
 #MUST use EXACTLY same configuration (incl. dependencies) as in training
 #otherwise it won't load
-model = 'res_better_layers.h5' #Classes 0 Bombers, 1 Missiles, 2 Other, 3 Submarines
+#from keras.models import load_model
+model = 'res_better_layers.h5'#Classes 0 Bombers, 1 Missiles, 2 Other, 3 Submarines
 model = load_model(model)
 model.compile(loss='categorical_crossentropy',
               optimizer=optimizers.RMSprop(lr=1e-4),
               metrics=['acc'])
 print ("Model loaded.")
-
 #Keras predictor
 def predict_it(image_name):
     #preprocesses images to same set-up as in model, then uses model to predict class
@@ -43,12 +44,22 @@ def predict_it(image_name):
     prediction = model.predict_classes(my_tensor) #model.predict will return softmax probabilities
     
     return prediction[0] #use indexing to return actual number, not list of number
-  
+    
+
+# Model saved with Keras model.save()
+#MODEL_PATH = os.path.join(os.getcwd(), 'models', '224_all_picparse.h5')
+
+# You can also use pretrained model from Keras
+# Check https://keras.io/applications/
+from keras.applications.resnet50 import ResNet50
+model = ResNet50(weights='imagenet')
+
 # Define a flask app
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+<<<<<<< HEAD
         siteurl = []
         images =[]
         parsedID =[] #container for website images
@@ -86,6 +97,45 @@ def index():
             return render_template('parser.html', results=parsed_results, full_results=full_results)
         return render_template('index.html')
     
+=======
+		siteurl = []
+		images =[]
+		parsedID =[]
+		parsedClass = []
+		if request.method == 'POST':
+			urls = request.form['urls'].split(",")
+			for url in urls:  # build list of image urls for display and image file names for classification
+				url = url.strip()
+				siteurl.append(url)
+				r = requests.get(url)
+				data = r.text
+				soup = BeautifulSoup(data, "html5lib")
+				for img in soup.findAll('img'):
+					src = img.get('src')
+					src = urllib.parse.urljoin(url, src) #used to get full path when sites give relative paths.
+					images.append(src)
+					#parsedID.append(urllib.request.urlretrieve(src)[0]) 
+					filebinary = requests.get(src)
+					tmp = tempfile.NamedTemporaryFile(delete=False)
+					path = tmp.name
+					tmp.write(filebinary.content)
+					parsedID.append(path)
+					tmp.close()
+					
+			for	fn in parsedID:
+				#print(fn)
+				try:
+					parsedClass.append(predict_it(fn))
+				except:
+					pass
+				os.remove(fn) #delete tmp files
+			results = list(zip(siteurl, parsedClass, images))
+			#urllib.request.urlcleanup() #clean up tempfiles from urlretrieve
+			return render_template('parser.html', results=results, sites=urls)
+		return render_template('index.html')
+	
+>>>>>>> 1607eb43f3fd799b1a2e6e4d6df355fc962d2039
+
 
 @app.route('/about')
 def about():
