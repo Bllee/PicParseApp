@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 #Borrows from GitHub Keras-Flask-Deploy-Webapp
+#see also https://blog.keras.io/index.html
 
 
 # Keras
@@ -44,6 +45,14 @@ def predict_it(image_name):
     
     return prediction[0] #use indexing to return actual number, not list of number
     
+
+# Model saved with Keras model.save()
+#MODEL_PATH = os.path.join(os.getcwd(), 'models', '224_all_picparse.h5')
+
+# You can also use pretrained model from Keras
+# Check https://keras.io/applications/
+from keras.applications.resnet50 import ResNet50
+model = ResNet50(weights='imagenet')
 
 # Define a flask app
 app = Flask(__name__)
