@@ -60,13 +60,24 @@ def get_it(url):
         for img in soup.findAll('img'):
             src = img.get('src')
             src = urllib.parse.urljoin(url, src) #used to get full path when sites give relative paths.
-            image_bucket.append(src)
+            if ".jpg" in src:
+                image_bucket.append(src)
+            elif ".jpeg" in src:
+                image_bucket.append(src)
+            elif ".svg" in src:
+                image_bucket.append(src)
+            elif ".png" in src:
+                image_bucket.append(src)
+            elif ".gif" in src:
+                image_bucket.append(src)
+                
             site_url.append(url)
     except:
         pass
 
 #Temp save of images to disk for passing to classifier        
 def save_it(src):
+
     parsed_path=[]
     filebinary = requests.get(src)
     tmp = tempfile.NamedTemporaryFile(delete=False)
@@ -76,6 +87,7 @@ def save_it(src):
     tmp_image_path.append(path)
     
     tmp.close()
+
     return parsed_path
 
 # Define a flask app
