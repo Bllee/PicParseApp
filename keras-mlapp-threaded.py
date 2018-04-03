@@ -24,8 +24,8 @@ import time
 
 image_bucket =[]
 site_url =[]
-tmp_image_path = []
-predictions =[]
+#tmp_image_path = []
+#predictions =[]
 
 print ("Loading and compiling model...")
 #Load and compile Keras model
@@ -60,35 +60,44 @@ def get_it(url):
         for img in soup.findAll('img'):
             src = img.get('src')
             src = urllib.parse.urljoin(url, src) #used to get full path when sites give relative paths.
-            if ".jpg" in src:
+            if "http" in src:
+                image_bucket.append(src) 
+                site_url.append(url)
+            '''if ".jpg" in src:
                 image_bucket.append(src)
+                site_url.append(url)
             elif ".jpeg" in src:
                 image_bucket.append(src)
+                site_url.append(url)
             elif ".svg" in src:
                 image_bucket.append(src)
+                site_url.append(url)
             elif ".png" in src:
                 image_bucket.append(src)
+                site_url.append(url)
             elif ".gif" in src:
                 image_bucket.append(src)
-                
-            site_url.append(url)
+                site_url.append(url)
+           
+            #site_url.append(url) '''
     except:
         pass
 
 #Temp save of images to disk for passing to classifier        
 def save_it(src):
-
+##trick is to clean image_bucket before sending to requests
     parsed_path=[]
     filebinary = requests.get(src)
     tmp = tempfile.NamedTemporaryFile(delete=False)
     path = tmp.name
     tmp.write(filebinary.content)
     parsed_path.append(path)
-    tmp_image_path.append(path)
+    #tmp_image_path.append(path)
     
     tmp.close()
-
+ 
     return parsed_path
+
 
 # Define a flask app
 app = Flask(__name__)
@@ -100,6 +109,9 @@ def index():
         #got_it =[] #container for website images
         classified = []
         if request.method == 'POST':
+            image_bucket.clear()
+            site_url.clear()
+            #tmp_image_path.clear()
             start = time.time()
             urls = request.form['urls'].split(",")
             with concurrent.futures.ThreadPoolExecutor() as executor1:
@@ -124,6 +136,8 @@ def index():
             #urllib.request.urlcleanup() #clean up tempfiles from urlretrieve
             return render_template('parser.html', results=parsed_results, full_results=full_results)
         return render_template('index.html')
+        
+        
     
 
 @app.route('/about')
@@ -133,6 +147,8 @@ def about():
 @app.route('/parser')
 def parser():
     return render_template('parser.html')
+
+
 
 
 
