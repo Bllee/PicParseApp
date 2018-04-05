@@ -114,14 +114,15 @@ def index():
             #tmp_image_path.clear()
             start = time.time()
             urls = request.form['urls'].split(",")
-            with concurrent.futures.ThreadPoolExecutor() as executor1:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=len(urls)) as executor1:
                 print("Starting executor1")
                 executor1.map(get_it, urls)
+                
 
             with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor2:
                 print("Starting executor2")
                 result2 = executor2.map(save_it, image_bucket)
-
+                
 
             for item in result2:
                 try: 
