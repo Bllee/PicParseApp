@@ -47,6 +47,7 @@ for fn in os.listdir():
     
 
 #Keyframe timestamps
+#See also https://superuser.com/questions/841872/how-do-i-extract-the-timestamps-associated-with-frames-ffmpeg-extracts-from-a-vi
     
 vidnames = [filename for filename in os.listdir() if ".mp4" in filename] #should still be in SAVEPATH
 
@@ -63,4 +64,10 @@ for vidname in vidnames:
     subprocess.call(f'{FFMPEGPATH}ffmpeg -i {SAVEPATH}{vidname} -vf select="eq(pict_type\,PICT_TYPE_I)" -vsync 2 -f image2 {vidname}_%02d.jpg', shell=True)
     
 #Rename keyframe thumbnails to include timestamp
+#First strip out unnecessary text from keyframe timestamp.txt to get clean timestamps
+with open("keyframe_test_doc.txt", "rt") as f:
+    f= f.readlines()
+    f = [entry.lstrip('1, ').rstrip() for entry in f]
+    
+#Next build new filenames in H-M-S format
 
