@@ -12,5 +12,7 @@ Images were pulled using a combination of existing repositories (ImageNet), sear
 The model was trained and fine-tuned using the instructions contained in this tutuorial:
 https://github.com/spmallick/learnopencv/blob/master/Keras-Fine-Tuning/keras-finetune-vgg.ipynb
 
-The app uses a Flask framework and parses website inputs for images with Requests and BeautifulSoup. 
+The app uses a Flask framework and parses website inputs for images with Requests and BeautifulSoup. Additional dependencies are in the requirements.txt file.
+
+**NB** The app will not run without a trained model (*.h5 file). The model we use is not included in this repository due to size constraints.
 
