@@ -21,7 +21,7 @@
 			{% for item in results %}
 				<tr>
 				<!--<th scope="row">{{ (results|length)-(results|length -1)}}</th> -->
-				<td>{{ item[0] }}</td>
+				<td style="word-wrap: break-word; min-width: 500px; max-width: 500px";> {{ item[0] }}</td>
 				<td>Picture class is {{ item[1] }}</td>
 				<td><a href="{{ item[2] }}"><img src={{ item[2] }} style="max-width:20%; height:auto" class="img fluid img-thumbnail"></a></td>
 				</tr>
